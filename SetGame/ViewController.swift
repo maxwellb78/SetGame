@@ -10,29 +10,36 @@ import UIKit
 
 class ViewController: UIViewController {
     //private lazy var game = Set(numberOfPairsOfCards: numberOfPairsOfCards)
-    private lazy var game = Set()
+    private lazy var game = Set(numberOfCardInGame: 0)
     let symbols = ["▲", "●", "■"]
     let colors = [#colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1), #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1), #colorLiteral(red: 0.5791940689, green: 0.1280144453, blue: 0.5726861358, alpha: 1)]
     let c = [UIColor.green, UIColor.red, UIColor.purple]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        updateViewFromModel()
-        
+        startNewGame()
     }
     
     @IBAction func touchNewGameButton(_ sender: UIButton) {
-        game = Set()
+        startNewGame()
+    }
+
+    private func startNewGame() {
+        game = Set(numberOfCardInGame: cardButtons.count)
+        //Start the game by dealing 12 cards
+        game.dealCards(numberOfCards: 12)
         updateViewFromModel()
     }
     
     @IBOutlet var cardButtons: [UIButton]!
     
-    private func updateViewFromModel(){
+    private func updateViewFromModel(){        
         for index in 0...23 {
             let cardButton = cardButtons[index]
             setButtonAttributesAndText(cardButton, setNumberofSymbol(card: game.cards[index]), color: game.cards[index].color, shading: game.cards[index].shading)
+            cardButton.layer.cornerRadius = 8.0
+            cardButton.layer.borderWidth = 1.0
+            cardButton.layer.borderColor = UIColor.black.cgColor
         }
         
     }
