@@ -11,6 +11,7 @@ import Foundation
 struct Set {
     private(set) var cards = [Card]()
     private(set) var cardsDealt = [Card]()
+    private(set) var cardsSelected = [Card]()
     
     mutating func dealCards(numberOfCards number: Int){
         var count = number
@@ -35,6 +36,23 @@ struct Set {
         }
         return true
     }
+    
+    mutating func chooseCard(at index: Int){
+        //If card is not dealt ignore
+        if !cardsDealt.contains(cards[index]){
+            return
+        }
+        //Lets just select and deselect cards to start
+        if !cardsSelected.contains(cards[index]){
+            cardsSelected.append(cards[index])
+        } else {
+            if let selectedCardIndex = cardsSelected.index(of: cards[index]) {
+                cardsSelected.remove(at: selectedCardIndex)
+            }
+        }
+        
+    }
+    
     
     init(numberOfCardInGame: Int) {
         for symbolIndex in 0...2 {

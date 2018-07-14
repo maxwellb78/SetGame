@@ -14,6 +14,8 @@ class ViewController: UIViewController {
     let symbols = ["▲", "●", "■"]
     let colors = [UIColor.blue, UIColor.red, UIColor.purple]
     
+    @IBOutlet weak var dealButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         startNewGame()
@@ -35,21 +37,31 @@ class ViewController: UIViewController {
     private func updateViewFromModel(){
         //for each Card Button set up the button
         for index in cardButtons.indices{
+            cardButtons[index].layer.cornerRadius = 8.0
             //If Card has been dealt then show it
             if game.cardsDealt.contains(game.cards[index]){
                 setButtonAttributesAndText(cardButtons[index], setNumberofSymbol(card: game.cards[index]), color: game.cards[index].color, shading: game.cards[index].shading)
-                cardButtons[index].layer.cornerRadius = 8.0
-                cardButtons[index].layer.borderWidth = 1.0
-                cardButtons[index].layer.borderColor = UIColor.black.cgColor
+                if game.cardsSelected.contains(game.cards[index]) {
+                    cardButtons[index].layer.borderWidth = 5.0
+                    cardButtons[index].layer.borderColor = UIColor.red.cgColor
+                } else {
+                    cardButtons[index].layer.borderWidth = 1.0
+                    cardButtons[index].layer.borderColor = UIColor.black.cgColor
+                }
             } else {
                 clearButtonTitle(cardButtons[index])
-                cardButtons[index].layer.cornerRadius = 8.0
                 cardButtons[index].layer.borderWidth = 0
                 cardButtons[index].layer.borderColor = UIColor.clear.cgColor
             }
         }
-
+        
+        if game.haveAllCardsBeenDealt() {
+            dealButton.setTitle("No Cards Left", for: UIControlState.normal)
+        } else {
+            dealButton.setTitle("Deal More Cards", for: UIControlState.normal)
+        }
     }
+    
     private func setNumberofSymbol(card: Card) -> String{
         let symbol = symbols[card.symbol]
         var title = ""
@@ -84,6 +96,20 @@ class ViewController: UIViewController {
         attributes[.strokeColor] = UIColor.clear.cgColor
         let attributedString = NSAttributedString(string: "", attributes: attributes)
         button.setAttributedTitle(attributedString, for: UIControlState.normal)
+    }
+    
+    @IBAction func touchCardButton(_ sender: UIButton) {
+        if let cardNumber = cardButtons.index(of: sender){
+            game.chooseCard(at: cardNumber)
+            updateViewFromModel()
+        } else{
+            print("chosen card was not in cardButtons")
+        }
+    }
+    
+    @IBAction func touchDealMoreCards(_ sender: UIButton) {
+        game.dealCards(numberOfCards: 3)
+        updateViewFromModel()
     }
     
     
