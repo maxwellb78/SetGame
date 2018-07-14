@@ -13,14 +13,27 @@ struct Set {
     private(set) var cardsDealt = [Card]()
     
     mutating func dealCards(numberOfCards number: Int){
-        for _ in 0...number{
+        var count = number
+        while count > 0 {
             let index = cards.count.arc4random
             if !cardsDealt.contains(cards[index]){
                 let card = cards[index]
                 cardsDealt.append(card)
+                count -= 1
+            }
+            if haveAllCardsBeenDealt() {
+                count = 0
             }
         }
-        print(cardsDealt)
+    }
+    
+    func haveAllCardsBeenDealt() -> Bool{
+        for index in cards.indices{
+            if !cardsDealt.contains(cards[index]){
+                return false
+            }
+        }
+        return true
     }
     
     init(numberOfCardInGame: Int) {

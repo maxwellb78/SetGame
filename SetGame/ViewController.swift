@@ -12,8 +12,7 @@ class ViewController: UIViewController {
     //private lazy var game = Set(numberOfPairsOfCards: numberOfPairsOfCards)
     private lazy var game = Set(numberOfCardInGame: 0)
     let symbols = ["▲", "●", "■"]
-    let colors = [#colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1), #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1), #colorLiteral(red: 0.5791940689, green: 0.1280144453, blue: 0.5726861358, alpha: 1)]
-    let c = [UIColor.green, UIColor.red, UIColor.purple]
+    let colors = [UIColor.blue, UIColor.red, UIColor.purple]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,17 +32,24 @@ class ViewController: UIViewController {
     
     @IBOutlet var cardButtons: [UIButton]!
     
-    private func updateViewFromModel(){        
-        for index in 0...23 {
-            let cardButton = cardButtons[index]
-            setButtonAttributesAndText(cardButton, setNumberofSymbol(card: game.cards[index]), color: game.cards[index].color, shading: game.cards[index].shading)
-            cardButton.layer.cornerRadius = 8.0
-            cardButton.layer.borderWidth = 1.0
-            cardButton.layer.borderColor = UIColor.black.cgColor
+    private func updateViewFromModel(){
+        //for each Card Button set up the button
+        for index in cardButtons.indices{
+            //If Card has been dealt then show it
+            if game.cardsDealt.contains(game.cards[index]){
+                setButtonAttributesAndText(cardButtons[index], setNumberofSymbol(card: game.cards[index]), color: game.cards[index].color, shading: game.cards[index].shading)
+                cardButtons[index].layer.cornerRadius = 8.0
+                cardButtons[index].layer.borderWidth = 1.0
+                cardButtons[index].layer.borderColor = UIColor.black.cgColor
+            } else {
+                clearButtonTitle(cardButtons[index])
+                cardButtons[index].layer.cornerRadius = 8.0
+                cardButtons[index].layer.borderWidth = 0
+                cardButtons[index].layer.borderColor = UIColor.clear.cgColor
+            }
         }
-        
+
     }
-    
     private func setNumberofSymbol(card: Card) -> String{
         let symbol = symbols[card.symbol]
         var title = ""
@@ -53,25 +59,31 @@ class ViewController: UIViewController {
         return title
     }
     
-    private func setButtonAttributesAndText(_ title: UIButton, _ text: String, color: Int, shading: Int){
+    private func setButtonAttributesAndText(_ button: UIButton, _ text: String, color: Int, shading: Int){
         var attributes: [NSAttributedStringKey:Any] = [:]
         if shading == 0{
             // set to filled
             attributes[.strokeWidth] = -1
-            attributes[.strokeColor] = c[color]
-            attributes[.foregroundColor] = c[color].withAlphaComponent(1)
+            attributes[.strokeColor] = colors[color]
+            attributes[.foregroundColor] = colors[color].withAlphaComponent(1)
         } else if shading == 1{
             // set to stripped
-            attributes[.foregroundColor] = c[color].withAlphaComponent(0.15)
-            attributes[.strokeColor] = c[color]
+            attributes[.foregroundColor] = colors[color].withAlphaComponent(0.3)
+            attributes[.strokeColor] = colors[color]
         } else {
             // set to outlined
             attributes[.strokeWidth] = 8
-            attributes[.strokeColor] = c[color]
+            attributes[.strokeColor] = colors[color]
         }
         let attributedString = NSAttributedString(string: text, attributes: attributes)
-        title.setAttributedTitle(attributedString, for: UIControlState.normal)
-        //title.setattributedText = attributedString
+        button.setAttributedTitle(attributedString, for: UIControlState.normal)
+    }
+    
+    private func clearButtonTitle(_ button: UIButton) {
+        var attributes: [NSAttributedStringKey:Any] = [:]
+        attributes[.strokeColor] = UIColor.clear.cgColor
+        let attributedString = NSAttributedString(string: "", attributes: attributes)
+        button.setAttributedTitle(attributedString, for: UIControlState.normal)
     }
     
     
