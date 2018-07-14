@@ -11,59 +11,78 @@ import Foundation
 struct Set {
     private(set) var cards = [Card]()
     private(set) var cardsDealt = [Card]()
+    private(set) var cardsDealtDict: [Int : Card] = [:]
     private(set) var cardsSelected = [Card]()
     private(set) var cardsMatched = [Card]()
     
     mutating func dealCards(numberOfCards number: Int){
-        var count = number
-        while count > 0 {
-            let index = cards.count.arc4random
-            if !cardsDealt.contains(cards[index]){
-                let card = cards[index]
-                cardsDealt.append(card)
-                count -= 1
-            }
-            if haveAllCardsBeenDealt() {
-                count = 0
+//        var count = number
+//        while count > 0 {
+//            let index = cards.count.arc4random
+//            if !cardsDealt.contains(cards[index]){
+//                let card = cards[index]
+//                cardsDealt.append(card)
+//                count -= 1
+//            }
+//            if haveAllCardsBeenDealt() {
+//                count = 0
+//            }
+//        }
+        
+        
+        for index in 0..<number {
+            if cards.count > 0 {
+               // cardsDealt.append(cards[0])
+                cardsDealtDict.updateValue(cards[0], forKey: index)
+                cards.remove(at: 0)
+            } else {
+                return
             }
         }
     }
     
     func haveAllCardsBeenDealt() -> Bool{
-        for index in cards.indices{
-            if !cardsDealt.contains(cards[index]){
-                return false
-            }
-        }
-        return true
+//        for index in cards.indices{
+//            if !cardsDealt.contains(cards[index]){
+//                return false
+//            }
+//        }
+//        return true
+//        if cards.count == 0 {
+//            return true
+//        } else {
+//            return false
+//        }
+        
+        return cards.count == 0 ? true : false
+        
     }
     
     mutating func chooseCard(at index: Int){
         //If card is not dealt ignore
-        if !cardsDealt.contains(cards[index]){
-            return
-        }
-        
-        //If card is matched ignore
-        if cardsMatched.contains(cards[index]){
-            return
-        }
-        
-        //Lets just select and deselect cards to start
-        if !cardsSelected.contains(cards[index]){
-            //Only select a card if less than 3 are selected already
-            if (cardsSelected.count < 3){
-                cardsSelected.append(cards[index])
+        if let card = cardsDealtDict[index] {
+            
+            //If card is matched ignore
+            if cardsMatched.contains(card){
+                return
             }
-        } else {
-            if let selectedCardIndex = cardsSelected.index(of: cards[index]) {
-                cardsSelected.remove(at: selectedCardIndex)
+            
+            //Lets just select and deselect cards to start
+            if !cardsSelected.contains(card){
+                //Only select a card if less than 3 are selected already
+                if (cardsSelected.count < 3){
+                    cardsSelected.append(card)
+                }
+            } else {
+                if let selectedCardIndex = cardsSelected.index(of: card) {
+                    cardsSelected.remove(at: selectedCardIndex)
+                }
             }
-        }
-        
-        //If 3 cards selected chcek for match
-        if cardsSelected.count == 3 {
-            checkForMatch(firstCard: cardsSelected[0], secondCard: cardsSelected[1], thridCard: cardsSelected[2])
+            
+            //If 3 cards selected chcek for match
+            if cardsSelected.count == 3 {
+                checkForMatch(firstCard: cardsSelected[0], secondCard: cardsSelected[1], thridCard: cardsSelected[2])
+            }
         }
         
     }
