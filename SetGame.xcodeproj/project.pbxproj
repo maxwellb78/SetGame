@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7810086C20F6E66F0093F83F /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7810086B20F6E66F0093F83F /* Card.swift */; };
+		7810086E20F6EAEF0093F83F /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7810086D20F6EAEF0093F83F /* Set.swift */; };
 		784934B520F59C5000DF6F29 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784934B420F59C5000DF6F29 /* AppDelegate.swift */; };
 		784934B720F59C5000DF6F29 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784934B620F59C5000DF6F29 /* ViewController.swift */; };
 		784934BA20F59C5000DF6F29 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 784934B820F59C5000DF6F29 /* Main.storyboard */; };
@@ -15,6 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7810086B20F6E66F0093F83F /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		7810086D20F6EAEF0093F83F /* Set.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
 		784934B120F59C5000DF6F29 /* SetGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SetGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		784934B420F59C5000DF6F29 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		784934B620F59C5000DF6F29 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -55,6 +59,8 @@
 			isa = PBXGroup;
 			children = (
 				784934B620F59C5000DF6F29 /* ViewController.swift */,
+				7810086D20F6EAEF0093F83F /* Set.swift */,
+				7810086B20F6E66F0093F83F /* Card.swift */,
 				784934B820F59C5000DF6F29 /* Main.storyboard */,
 				784934C620F59C8100DF6F29 /* Supporting Files */,
 				784934C020F59C5100DF6F29 /* Info.plist */,
@@ -143,7 +149,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7810086E20F6EAEF0093F83F /* Set.swift in Sources */,
 				784934B720F59C5000DF6F29 /* ViewController.swift in Sources */,
+				7810086C20F6E66F0093F83F /* Card.swift in Sources */,
 				784934B520F59C5000DF6F29 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

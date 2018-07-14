@@ -22,6 +22,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ndb-Oi-mRr">
                                 <rect key="frame" x="150" y="617" width="75" height="30"/>
                                 <state key="normal" title="New Game"/>
+                                <connections>
+                                    <action selector="touchNewGameButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="G6j-g5-zxR"/>
+                                </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="qoE-3T-FBg" userLabel="Stack Voiew">
                                 <rect key="frame" x="16" y="20" width="343" height="405"/>
@@ -38,22 +41,18 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PEN-Eh-x66">
                                                 <rect key="frame" x="0.0" y="0.0" width="80" height="51"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="32"/>
-                                                <state key="normal" title="▲"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wJF-4c-Mks">
                                                 <rect key="frame" x="88" y="0.0" width="79.5" height="51"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="32"/>
-                                                <state key="normal" title="●"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FdB-D9-xZI">
                                                 <rect key="frame" x="175.5" y="0.0" width="80" height="51"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="32"/>
-                                                <state key="normal" title="■"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tBQ-ks-MpV">
                                                 <rect key="frame" x="263.5" y="0.0" width="79.5" height="51"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="32"/>
-                                                <state key="normal" title="■"/>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -196,10 +195,36 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outletCollection property="cardButtons" destination="PEN-Eh-x66" collectionClass="NSMutableArray" id="yQn-hc-oyv"/>
+                        <outletCollection property="cardButtons" destination="wJF-4c-Mks" collectionClass="NSMutableArray" id="4hA-yB-Vx2"/>
+                        <outletCollection property="cardButtons" destination="FdB-D9-xZI" collectionClass="NSMutableArray" id="RiT-Tj-zsz"/>
+                        <outletCollection property="cardButtons" destination="tBQ-ks-MpV" collectionClass="NSMutableArray" id="ccg-8H-hIX"/>
+                        <outletCollection property="cardButtons" destination="v80-Me-aas" collectionClass="NSMutableArray" id="9UV-bE-OKc"/>
+                        <outletCollection property="cardButtons" destination="4L9-PM-V3G" collectionClass="NSMutableArray" id="VnO-Ha-B36"/>
+                        <outletCollection property="cardButtons" destination="tNE-Xi-REt" collectionClass="NSMutableArray" id="Rdz-7c-Jeu"/>
+                        <outletCollection property="cardButtons" destination="R7S-RA-8zs" collectionClass="NSMutableArray" id="hfQ-8u-Yjf"/>
+                        <outletCollection property="cardButtons" destination="Fka-I8-qkr" collectionClass="NSMutableArray" id="g4I-Fn-qRG"/>
+                        <outletCollection property="cardButtons" destination="AOO-Uv-5WU" collectionClass="NSMutableArray" id="dHo-OU-gq0"/>
+                        <outletCollection property="cardButtons" destination="uh2-dG-mxr" collectionClass="NSMutableArray" id="ynJ-PE-z33"/>
+                        <outletCollection property="cardButtons" destination="7ET-pG-qIb" collectionClass="NSMutableArray" id="bNf-yh-R5k"/>
+                        <outletCollection property="cardButtons" destination="ciI-zL-x9H" collectionClass="NSMutableArray" id="uqk-kx-Hj5"/>
+                        <outletCollection property="cardButtons" destination="IXK-nt-LSp" collectionClass="NSMutableArray" id="KYw-LE-dSn"/>
+                        <outletCollection property="cardButtons" destination="A62-2a-lh2" collectionClass="NSMutableArray" id="Tmw-Zc-VL8"/>
+                        <outletCollection property="cardButtons" destination="P4g-nc-bBx" collectionClass="NSMutableArray" id="onS-Rz-VuR"/>
+                        <outletCollection property="cardButtons" destination="VOh-k8-bH4" collectionClass="NSMutableArray" id="fA7-XX-nk8"/>
+                        <outletCollection property="cardButtons" destination="hHs-s5-2JC" collectionClass="NSMutableArray" id="I3B-kH-xQP"/>
+                        <outletCollection property="cardButtons" destination="om4-Ps-ExG" collectionClass="NSMutableArray" id="zpc-Pj-7Jw"/>
+                        <outletCollection property="cardButtons" destination="XAh-iH-lZg" collectionClass="NSMutableArray" id="oPc-Qt-abU"/>
+                        <outletCollection property="cardButtons" destination="zxx-Bl-Z7i" collectionClass="NSMutableArray" id="1f1-d9-NQi"/>
+                        <outletCollection property="cardButtons" destination="9B1-SR-kNO" collectionClass="NSMutableArray" id="h6d-S8-RbT"/>
+                        <outletCollection property="cardButtons" destination="cO9-ms-i34" collectionClass="NSMutableArray" id="gnq-mN-zbJ"/>
+                        <outletCollection property="cardButtons" destination="hMf-kM-Zx8" collectionClass="NSMutableArray" id="rRr-oZ-5Dx"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="136.80000000000001" y="133.5832083958021"/>
+            <point key="canvasLocation" x="334" y="134"/>
         </scene>
     </scenes>
 </document>
