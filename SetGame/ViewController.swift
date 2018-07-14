@@ -9,8 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-    //private lazy var game = Set(numberOfPairsOfCards: numberOfPairsOfCards)
-    private lazy var game = Set(numberOfCardInGame: 0)
+    private lazy var game = Set()
     let symbols = ["▲", "●", "■"]
     let colors = [UIColor.blue, UIColor.red, UIColor.purple]
     
@@ -26,7 +25,7 @@ class ViewController: UIViewController {
     }
 
     private func startNewGame() {
-        game = Set(numberOfCardInGame: cardButtons.count)
+        game = Set()
         //Start the game by dealing 12 cards
         game.dealCards(numberOfCards: 12)
         updateViewFromModel()
@@ -37,21 +36,38 @@ class ViewController: UIViewController {
     private func updateViewFromModel(){
         //for each Card Button set up the button
         for index in cardButtons.indices{
-            cardButtons[index].layer.cornerRadius = 8.0
+            let cardButton = cardButtons[index]
+            let card = game.cards[index]
+            cardButton.layer.cornerRadius = 8.0
+            
             //If Card has been dealt then show it
-            if game.cardsDealt.contains(game.cards[index]){
-                setButtonAttributesAndText(cardButtons[index], setNumberofSymbol(card: game.cards[index]), color: game.cards[index].color, shading: game.cards[index].shading)
-                if game.cardsSelected.contains(game.cards[index]) {
-                    cardButtons[index].layer.borderWidth = 5.0
-                    cardButtons[index].layer.borderColor = UIColor.red.cgColor
-                } else {
-                    cardButtons[index].layer.borderWidth = 1.0
-                    cardButtons[index].layer.borderColor = UIColor.black.cgColor
+            if game.cardsDealt.contains(card){
+                let card = game.cards[index]
+                
+                //Layout the card
+                setButtonAttributesAndText(cardButton, setNumberofSymbol(card: card), color: card.color, shading: card.shading)
+                
+                //Set the card border for matched and selected
+                if game.cardsSelected.contains(card) {
+                    cardButton.layer.borderWidth = 5.0
+                    cardButton.layer.borderColor = UIColor.red.cgColor
+                    cardButton.layer.backgroundColor = UIColor.clear.cgColor
+                }
+                 else if game.cardsMatched.contains(card) {
+                    cardButton.layer.borderWidth = 1.0
+                    cardButton.layer.borderColor = UIColor.black.cgColor
+                    cardButton.layer.backgroundColor = UIColor.yellow.cgColor
+                }
+                else {
+                    cardButton.layer.borderWidth = 1.0
+                    cardButton.layer.borderColor = UIColor.black.cgColor
+                    cardButton.layer.backgroundColor = UIColor.clear.cgColor
                 }
             } else {
-                clearButtonTitle(cardButtons[index])
-                cardButtons[index].layer.borderWidth = 0
-                cardButtons[index].layer.borderColor = UIColor.clear.cgColor
+                clearButtonTitle(cardButton)
+                cardButton.layer.borderWidth = 0
+                cardButton.layer.borderColor = UIColor.clear.cgColor
+                cardButton.layer.backgroundColor = UIColor.clear.cgColor
             }
         }
         
