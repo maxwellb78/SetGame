@@ -10,26 +10,12 @@ import Foundation
 
 struct Set {
     private(set) var cards = [Card]()
-    private(set) var cardsDealt = [Card]()
     private(set) var cardsDealtDict: [Int : Card] = [:]
     private(set) var cardsSelected = [Card]()
-    private(set) var cardsMatched = [Card]()
+    private(set) var maxCardsDisplayed = 0
+    private(set) var numberOfMatches = 0
     
     mutating func dealCards(numberOfCards number: Int){
-//        var count = number
-//        while count > 0 {
-//            let index = cards.count.arc4random
-//            if !cardsDealt.contains(cards[index]){
-//                let card = cards[index]
-//                cardsDealt.append(card)
-//                count -= 1
-//            }
-//            if haveAllCardsBeenDealt() {
-//                count = 0
-//            }
-//        }
-        
-        
         for index in 0..<number {
             if cards.count > 0 {
                // cardsDealt.append(cards[0])
@@ -41,31 +27,31 @@ struct Set {
         }
     }
     
+    mutating func dealThreeCards(){
+        dealCard()
+        dealCard()
+        dealCard()
+    }
+    
+    mutating func dealCard(){
+        if cards.count > 0 {
+            for index in 0...maxCardsDisplayed - 1 {
+                if cardsDealtDict[index] == nil {
+                    cardsDealtDict.updateValue(cards[0], forKey: index)
+                    cards.remove(at: 0)
+                    return
+                }
+            }
+        }
+    }
+    
     func haveAllCardsBeenDealt() -> Bool{
-//        for index in cards.indices{
-//            if !cardsDealt.contains(cards[index]){
-//                return false
-//            }
-//        }
-//        return true
-//        if cards.count == 0 {
-//            return true
-//        } else {
-//            return false
-//        }
-        
         return cards.count == 0 ? true : false
-        
     }
     
     mutating func chooseCard(at index: Int){
         //If card is not dealt ignore
         if let card = cardsDealtDict[index] {
-            
-            //If card is matched ignore
-            if cardsMatched.contains(card){
-                return
-            }
             
             //Lets just select and deselect cards to start
             if !cardsSelected.contains(card){
@@ -81,29 +67,45 @@ struct Set {
             
             //If 3 cards selected chcek for match
             if cardsSelected.count == 3 {
-                checkForMatch(firstCard: cardsSelected[0], secondCard: cardsSelected[1], thridCard: cardsSelected[2])
+                
+                //For a match all:
+                //    Sybmols must be same or different
+                //    Colors must be same or different
+                //    Number of Symbols must be some or different
+                //    Shading must be same or different
+                if (isOneElementMatched(cardOne: cardsSelected[0].symbol, cardTwo: cardsSelected[1].symbol, cardThree: cardsSelected[2].symbol) &&
+                    isOneElementMatched(cardOne: cardsSelected[0].color, cardTwo: cardsSelected[1].color, cardThree: cardsSelected[2].color) &&
+                    isOneElementMatched(cardOne: cardsSelected[0].numberOfSymbols, cardTwo: cardsSelected[1].numberOfSymbols, cardThree: cardsSelected[2].numberOfSymbols) &&
+                    isOneElementMatched(cardOne: cardsSelected[0].shading, cardTwo: cardsSelected[1].shading, cardThree: cardsSelected[2].shading)){
+
+                    //Matched move from Selected to Match
+                    removeCardsFromDealt(cardsSelected)
+                    cardsSelected.removeAll()
+                    dealThreeCards()
+                    numberOfMatches += 1
+                } else {
+                    //No Match deselect all cards and only select the card just touched
+                    cardsSelected.removeAll()
+                    cardsSelected.append(card)
+                }
+                
+                //Use this for testing without matching
+                //Matched move from Selected to Match
+//                removeCardsFromDealt(cardsSelected)
+//                cardsSelected.removeAll()
+//                dealThreeCards()
+//                numberOfMatches += 1
+                
             }
         }
-        
     }
     
-    private mutating func checkForMatch(firstCard: Card, secondCard: Card, thridCard: Card){
-        //For a match all:
-        //    Sybmols must be same or different
-        //    Colors must be same or different
-        //    Number of Symbols must be some or different
-        //    Shading must be same or different
-        if (isOneElementMatched(cardOne: firstCard.symbol, cardTwo: secondCard.symbol, cardThree: thridCard.symbol) &&
-            isOneElementMatched(cardOne: firstCard.color, cardTwo: secondCard.color, cardThree: thridCard.color) &&
-            isOneElementMatched(cardOne: firstCard.numberOfSymbols, cardTwo: secondCard.numberOfSymbols, cardThree: thridCard.numberOfSymbols) &&
-            isOneElementMatched(cardOne: firstCard.shading, cardTwo: secondCard.shading, cardThree: thridCard.shading)){
-            //Matched move from Selected to Match
-            cardsMatched.append(contentsOf: cardsSelected)
-            cardsSelected.removeAll()
-        } else {
-            
+    private mutating func removeCardsFromDealt(_ cards: [Card]){
+        for (cardNumber, card) in cardsDealtDict {
+            if cards.contains(card){
+                cardsDealtDict.removeValue(forKey: cardNumber)
+            }
         }
-        
     }
     
     private func isOneElementMatched(cardOne one: Int, cardTwo two: Int, cardThree three: Int) -> Bool {
@@ -118,7 +120,8 @@ struct Set {
         return false
     }
     
-    init() {
+    init(maxCardsDisplayed: Int) {
+        self.maxCardsDisplayed = maxCardsDisplayed
         for symbolIndex in 0...2 {
             for shadingIndex in 0...2 {
                 for colorIndex in 0...2 {
@@ -152,3 +155,4 @@ extension Int {
         }
     }
 }
+

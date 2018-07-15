@@ -9,11 +9,12 @@
 import UIKit
 
 class ViewController: UIViewController {
-    private lazy var game = Set()
+    private lazy var game = Set(maxCardsDisplayed: cardButtons.count)
     let symbols = ["▲", "●", "■"]
     let colors = [UIColor.blue, UIColor.red, UIColor.purple]
     
     @IBOutlet weak var dealButton: UIButton!
+    @IBOutlet weak var numberOfMatchesLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +26,7 @@ class ViewController: UIViewController {
     }
 
     private func startNewGame() {
-        game = Set()
+        game = Set(maxCardsDisplayed: cardButtons.count)
         //Start the game by dealing 12 cards
         game.dealCards(numberOfCards: 12)
         updateViewFromModel()
@@ -34,49 +35,11 @@ class ViewController: UIViewController {
     @IBOutlet var cardButtons: [UIButton]!
     
     private func updateViewFromModel(){
-//        //for each Card Button set up the button
-//        for index in cardButtons.indices{
-//            let cardButton = cardButtons[index]
-//            let card = game.cards[index]
-//            cardButton.layer.cornerRadius = 8.0
-//
-//            //If Card has been dealt then show it
-//            if game.cardsDealt.contains(card){
-//                let card = game.cards[index]
-//
-//                //Layout the card
-//                setButtonAttributesAndText(cardButton, setNumberofSymbol(card: card), color: card.color, shading: card.shading)
-//
-//                //Set the card border for matched and selected
-//                if game.cardsSelected.contains(card) {
-//                    cardButton.layer.borderWidth = 5.0
-//                    cardButton.layer.borderColor = UIColor.red.cgColor
-//                    cardButton.layer.backgroundColor = UIColor.clear.cgColor
-//                }
-//                 else if game.cardsMatched.contains(card) {
-//                    cardButton.layer.borderWidth = 1.0
-//                    cardButton.layer.borderColor = UIColor.black.cgColor
-//                    cardButton.layer.backgroundColor = UIColor.yellow.cgColor
-//                }
-//                else {
-//                    cardButton.layer.borderWidth = 1.0
-//                    cardButton.layer.borderColor = UIColor.black.cgColor
-//                    cardButton.layer.backgroundColor = UIColor.clear.cgColor
-//                }
-//            } else {
-//                clearButtonTitle(cardButton)
-//                cardButton.layer.borderWidth = 0
-//                cardButton.layer.borderColor = UIColor.clear.cgColor
-//                cardButton.layer.backgroundColor = UIColor.clear.cgColor
-//            }
-//        }
-        
-        
+
         //for each Card Button set up the button
         for index in cardButtons.indices{
             let cardButton = cardButtons[index]
             cardButton.layer.cornerRadius = 8.0
-            
             
             //Get the card for the cardButton
             //if game.cardsDealt.contains(card)
@@ -91,11 +54,11 @@ class ViewController: UIViewController {
                     cardButton.layer.borderColor = UIColor.red.cgColor
                     cardButton.layer.backgroundColor = UIColor.clear.cgColor
                 }
-                else if game.cardsMatched.contains(card) {
-                    cardButton.layer.borderWidth = 1.0
-                    cardButton.layer.borderColor = UIColor.black.cgColor
-                    cardButton.layer.backgroundColor = UIColor.yellow.cgColor
-                }
+//                else if game.cardsMatched.contains(card) {
+//                    cardButton.layer.borderWidth = 1.0
+//                    cardButton.layer.borderColor = UIColor.black.cgColor
+//                    cardButton.layer.backgroundColor = UIColor.yellow.cgColor
+//                }
                 else {
                     cardButton.layer.borderWidth = 1.0
                     cardButton.layer.borderColor = UIColor.black.cgColor
@@ -107,11 +70,16 @@ class ViewController: UIViewController {
                 cardButton.layer.borderColor = UIColor.clear.cgColor
                 cardButton.layer.backgroundColor = UIColor.clear.cgColor
             }
+            
+            numberOfMatchesLabel.text = "Matches: \(game.numberOfMatches)"
         }
         
         
-        if game.haveAllCardsBeenDealt() {
-            dealButton.setTitle("No Cards Left", for: UIControlState.normal)
+        //Set the Title for Deal Cards Button
+        if game.cards.isEmpty {
+            dealButton.setTitle("No cards left", for: UIControlState.normal)
+        } else if cardButtons.count == game.cardsDealtDict.count {
+            dealButton.setTitle("No spaces left for cards", for: UIControlState.normal)
         } else {
             dealButton.setTitle("Deal More Cards", for: UIControlState.normal)
         }
@@ -163,7 +131,8 @@ class ViewController: UIViewController {
     }
     
     @IBAction func touchDealMoreCards(_ sender: UIButton) {
-        game.dealCards(numberOfCards: 3)
+        //Deal 3 more cards
+        game.dealThreeCards()
         updateViewFromModel()
     }
     
