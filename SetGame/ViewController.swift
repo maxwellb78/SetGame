@@ -53,13 +53,7 @@ class ViewController: UIViewController {
                     cardButton.layer.borderWidth = 5.0
                     cardButton.layer.borderColor = UIColor.red.cgColor
                     cardButton.layer.backgroundColor = UIColor.clear.cgColor
-                }
-//                else if game.cardsMatched.contains(card) {
-//                    cardButton.layer.borderWidth = 1.0
-//                    cardButton.layer.borderColor = UIColor.black.cgColor
-//                    cardButton.layer.backgroundColor = UIColor.yellow.cgColor
-//                }
-                else {
+                } else {
                     cardButton.layer.borderWidth = 1.0
                     cardButton.layer.borderColor = UIColor.black.cgColor
                     cardButton.layer.backgroundColor = UIColor.clear.cgColor
@@ -135,7 +129,4 @@ class ViewController: UIViewController {
         game.dealThreeCards()
         updateViewFromModel()
     }
-    
-    
 }
-

@@ -67,18 +67,9 @@ struct Set {
             
             //If 3 cards selected chcek for match
             if cardsSelected.count == 3 {
-                
-                //For a match all:
-                //    Sybmols must be same or different
-                //    Colors must be same or different
-                //    Number of Symbols must be some or different
-                //    Shading must be same or different
-                if (isOneElementMatched(cardOne: cardsSelected[0].symbol, cardTwo: cardsSelected[1].symbol, cardThree: cardsSelected[2].symbol) &&
-                    isOneElementMatched(cardOne: cardsSelected[0].color, cardTwo: cardsSelected[1].color, cardThree: cardsSelected[2].color) &&
-                    isOneElementMatched(cardOne: cardsSelected[0].numberOfSymbols, cardTwo: cardsSelected[1].numberOfSymbols, cardThree: cardsSelected[2].numberOfSymbols) &&
-                    isOneElementMatched(cardOne: cardsSelected[0].shading, cardTwo: cardsSelected[1].shading, cardThree: cardsSelected[2].shading)){
-
-                    //Matched move from Selected to Match
+                // USE THIS FOR TESTING
+                // if areThreeCardsAMatch(cardOne: cardsSelected[0], cardTwo: cardsSelected[0], cardThree: cardsSelected[0]) {
+                if areThreeCardsAMatch(cardOne: cardsSelected[0], cardTwo: cardsSelected[1], cardThree: cardsSelected[2]) {
                     removeCardsFromDealt(cardsSelected)
                     cardsSelected.removeAll()
                     dealThreeCards()
@@ -88,14 +79,6 @@ struct Set {
                     cardsSelected.removeAll()
                     cardsSelected.append(card)
                 }
-                
-                //Use this for testing without matching
-                //Matched move from Selected to Match
-//                removeCardsFromDealt(cardsSelected)
-//                cardsSelected.removeAll()
-//                dealThreeCards()
-//                numberOfMatches += 1
-                
             }
         }
     }
@@ -106,6 +89,18 @@ struct Set {
                 cardsDealtDict.removeValue(forKey: cardNumber)
             }
         }
+    }
+    
+    private func areThreeCardsAMatch(cardOne one: Card, cardTwo two: Card, cardThree three: Card) -> Bool {
+        //For a match all:
+        //    Sybmols must be same or different
+        //    Colors must be same or different
+        //    Number of Symbols must be some or different
+        //    Shading must be same or different
+        return isOneElementMatched(cardOne: one.symbol, cardTwo: two.symbol, cardThree: three.symbol) &&
+            isOneElementMatched(cardOne: one.color, cardTwo: two.color, cardThree: three.color) &&
+            isOneElementMatched(cardOne: one.numberOfSymbols, cardTwo: two.numberOfSymbols, cardThree: three.numberOfSymbols) &&
+        isOneElementMatched(cardOne: one.shading, cardTwo: two.shading, cardThree: three.shading) ? true : false
     }
     
     private func isOneElementMatched(cardOne one: Int, cardTwo two: Int, cardThree three: Int) -> Bool {
