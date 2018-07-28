@@ -247,10 +247,13 @@
                                     <action selector="touchDealMoreCards:" destination="BYZ-38-t0r" eventType="touchUpInside" id="f7g-5Q-tLQ"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D2o-cS-epk">
-                                <rect key="frame" x="172" y="617" width="30" height="30"/>
-                                <state key="normal" title="Hint"/>
-                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E6t-5H-eT8">
+                                <rect key="frame" x="166" y="558" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -259,8 +262,6 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="jaN-OB-hp0" secondAttribute="trailing" constant="16" id="7Nz-vz-C53"/>
                             <constraint firstItem="qoE-3T-FBg" firstAttribute="leading" secondItem="Ndb-Oi-mRr" secondAttribute="trailing" constant="-75" id="OZO-AT-1AM"/>
                             <constraint firstItem="qoE-3T-FBg" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="QtB-Xf-TRD"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="D2o-cS-epk" secondAttribute="bottom" constant="20" id="Y1Z-eF-tom"/>
-                            <constraint firstItem="D2o-cS-epk" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="gVE-FO-bQ2"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Ndb-Oi-mRr" secondAttribute="bottom" constant="20" id="hft-FV-F5x"/>
                             <constraint firstItem="Ndb-Oi-mRr" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="ht1-U1-okb"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="jaN-OB-hp0" secondAttribute="bottom" constant="20" id="rOP-mS-M6k"/>

@@ -14,6 +14,7 @@
 		784934BA20F59C5000DF6F29 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 784934B820F59C5000DF6F29 /* Main.storyboard */; };
 		784934BC20F59C5100DF6F29 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 784934BB20F59C5100DF6F29 /* Assets.xcassets */; };
 		784934BF20F59C5100DF6F29 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 784934BD20F59C5100DF6F29 /* LaunchScreen.storyboard */; };
+		78B49F4721095D7B0092E07C /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B49F4621095D7B0092E07C /* Grid.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		784934BB20F59C5100DF6F29 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		784934BE20F59C5100DF6F29 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		784934C020F59C5100DF6F29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		78B49F4621095D7B0092E07C /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 				784934B620F59C5000DF6F29 /* ViewController.swift */,
 				7810086D20F6EAEF0093F83F /* Set.swift */,
 				7810086B20F6E66F0093F83F /* Card.swift */,
+				78B49F4621095D7B0092E07C /* Grid.swift */,
 				784934B820F59C5000DF6F29 /* Main.storyboard */,
 				784934C620F59C8100DF6F29 /* Supporting Files */,
 				784934C020F59C5100DF6F29 /* Info.plist */,
@@ -152,6 +155,7 @@
 				7810086E20F6EAEF0093F83F /* Set.swift in Sources */,
 				784934B720F59C5000DF6F29 /* ViewController.swift in Sources */,
 				7810086C20F6E66F0093F83F /* Card.swift in Sources */,
+				78B49F4721095D7B0092E07C /* Grid.swift in Sources */,
 				784934B520F59C5000DF6F29 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -26,6 +26,7 @@ class ViewController: UIViewController {
     }
 
     private func startNewGame() {
+        
         game = Set(maxCardsDisplayed: cardButtons.count)
         //Start the game by dealing 12 cards
         game.dealCards(numberOfCards: 12)
