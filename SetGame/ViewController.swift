@@ -15,14 +15,32 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var dealButton: UIButton!
     @IBOutlet weak var numberOfMatchesLabel: UILabel!
+    @IBOutlet weak var cardAreaView: UIView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        startNewGame()
+     //   startNewGame()
+        
+        let aspectRatio = CGFloat(0.71)
+        var grid = Grid.init(layout: Grid.Layout.aspectRatio(aspectRatio), frame: cardAreaView.frame)
+        grid.cellCount = 1
+        
+        
+        for index in 0..<grid.cellCount {
+            if let cardRect = grid[index] {
+                let cardView = CardView(frame: cardRect)
+                if let bgColor = cardAreaView.backgroundColor {
+                    cardView.superViewBackgroundColor = bgColor
+                }
+                cardView.sizeToFit()
+                cardAreaView.addSubview(cardView)
+            }
+        }
     }
     
     @IBAction func touchNewGameButton(_ sender: UIButton) {
-        startNewGame()
+  //      startNewGame()
     }
 
     private func startNewGame() {
