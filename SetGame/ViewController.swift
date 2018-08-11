@@ -10,6 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
     private lazy var game = Set(maxCardsDisplayed: cardButtons.count)
+    private let aspectRatio = CGFloat(0.71)
+    private lazy var grid = Grid.init(layout: Grid.Layout.aspectRatio(aspectRatio), frame: cardAreaView.bounds)
     let symbols = ["▲", "●", "■"]
     let colors = [UIColor.blue, UIColor.red, UIColor.purple]
     
@@ -17,44 +19,68 @@ class ViewController: UIViewController {
     @IBOutlet weak var numberOfMatchesLabel: UILabel!
     @IBOutlet weak var cardAreaView: UIView!
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-     //   startNewGame()
-        
-        let aspectRatio = CGFloat(0.71)
-        var grid = Grid.init(layout: Grid.Layout.aspectRatio(aspectRatio), frame: cardAreaView.frame)
-        grid.cellCount = 1
-        
-        
-        for index in 0..<grid.cellCount {
-            if let cardRect = grid[index] {
-                let cardView = CardView(frame: cardRect)
-                if let bgColor = cardAreaView.backgroundColor {
-                    cardView.superViewBackgroundColor = bgColor
-                }
-                cardView.sizeToFit()
-                cardAreaView.addSubview(cardView)
-            }
-        }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        startNewGame()
     }
     
     @IBAction func touchNewGameButton(_ sender: UIButton) {
-  //      startNewGame()
+        startNewGame()
     }
 
     private func startNewGame() {
-        
-        game = Set(maxCardsDisplayed: cardButtons.count)
+        game = Set(maxCardsDisplayed: Set.numberOfCardsInGame)
         //Start the game by dealing 12 cards
         game.dealCards(numberOfCards: 12)
         updateViewFromModel()
     }
     
     @IBOutlet var cardButtons: [UIButton]!
-    
-    private func updateViewFromModel(){
 
+    private func updateViewFromModel(){
+        //If there is a new number of cards reset the Grid
+        if grid.cellCount != game.cardsDealtDict.count {
+            grid.cellCount = game.cardsDealtDict.count
+        }
+        
+        for view in cardAreaView.subviews {
+            view.removeFromSuperview()
+        }
+        
+        for index in 0..<grid.cellCount {
+            if let cardRect = grid[index] {
+                if let card = game.cardsDealtDict[index]{
+                    
+                    let cardView = CardView(frame: cardRect)
+                    cardView.symbol = card.symbol
+                    cardView.color = card.color
+                    cardView.numberOfSymbols = card.numberOfSymbols
+                    cardView.shading = card.shading
+                    if game.cardsSelected.contains(card) {
+                        cardView.isSelected = true
+                    }
+                    if let bgColor = cardAreaView.backgroundColor {
+                        cardView.superViewBackgroundColor = bgColor
+                    }
+                    cardView.sizeToFit()
+                    cardAreaView.addSubview(cardView)
+                }
+            }
+        }
+        
+        
+        
+        //Set the Title for Deal Cards Button
+        if game.cards.isEmpty {
+            dealButton.setTitle("No cards left", for: UIControlState.normal)
+        } else {
+            dealButton.setTitle("Deal More Cards", for: UIControlState.normal)
+        }
+    }
+    
+    
+    private func OLDupdateViewFromModel(){
+ 
         //for each Card Button set up the button
         for index in cardButtons.indices{
             let cardButton = cardButtons[index]

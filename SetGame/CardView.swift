@@ -10,59 +10,143 @@ import UIKit
 
 class CardView: UIView {
     
-    var symbol: Int = 0 {didSet {setNeedsDisplay(); setNeedsLayout() } }
-    var shading: Int = 0 {didSet {setNeedsDisplay(); setNeedsLayout() } }
-    var color: Int = 0 {didSet {setNeedsDisplay(); setNeedsLayout() } }
-    var numberOfSymbols: Int = 0 {didSet {setNeedsDisplay(); setNeedsLayout() } }
+    var symbol: Int = 2 {didSet {setNeedsDisplay(); setNeedsLayout() } }
+    var shading: Int = 2 {didSet {setNeedsDisplay(); setNeedsLayout() } }
+    var color: Int = 1 {didSet {setNeedsDisplay(); setNeedsLayout() } }
+    var numberOfSymbols: Int = 2 {didSet {setNeedsDisplay(); setNeedsLayout() } }
     var superViewBackgroundColor: UIColor = UIColor.clear {didSet {setNeedsDisplay(); setNeedsLayout() } }
+    var isSelected: Bool = false {didSet {setNeedsDisplay(); setNeedsLayout() } }
+    private var cardBackgroundColor: UIColor = UIColor.white
+    private var selectedColor: UIColor = UIColor.red
+    
+    
     
     override func draw(_ rect: CGRect) {
-        
         //set the background of the view to the same color as the super view
         let background = UIBezierPath(rect: bounds)
-      //  background.addClip()
+        background.addClip()
         superViewBackgroundColor.setFill()
+        superViewBackgroundColor.setStroke()
+        background.lineWidth = 0
+        background.stroke()
         background.fill()
         
         //Used a rounded rectangle to get the card
         let roundedRect = UIBezierPath(roundedRect: roundedRectBounds, cornerRadius: cornerRadius)
-      //  roundedRect.addClip()
-        UIColor.white.setFill()
+        if isSelected {
+            selectedColor.setStroke()
+            roundedRect.lineWidth = 4.0
+            roundedRect.stroke()
+        }
+        cardBackgroundColor.setFill()
         roundedRect.fill()
+
         
-        let symbolRectHeight = roundedRectBounds.height / 3
-        let oneSymbolRect = CGRect(x: roundedRectBounds.minX, y: roundedRectBounds.minY, width: roundedRectBounds.width, height: symbolRectHeight).zoom(by: SizeRatio.symbolRectOffset)
-
-        let twoSymbolRect = CGRect(x: roundedRectBounds.minX, y: symbolRectHeight, width: roundedRectBounds.width, height: symbolRectHeight).zoom(by: SizeRatio.symbolRectOffset)
-
-        let threeSymbolRect = CGRect(x: roundedRectBounds.minX, y: symbolRectHeight * 2, width: roundedRectBounds.width, height: symbolRectHeight).zoom(by: SizeRatio.symbolRectOffset)
-
-//        print(oneSymbolRect)
-//        print(twoSymbolRect)
-//        print(threeSymbolRect)
-//
-        let rect = UIBezierPath(rect: oneSymbolRect)
-
-        let rect2 = UIBezierPath(rect: twoSymbolRect)
-
-        let rect3 = UIBezierPath(rect: threeSymbolRect)
-
-        let shapeLayer1 = CAShapeLayer()
-        shapeLayer1.path = rect.cgPath
-        shapeLayer1.fillColor = UIColor.blue.cgColor
+        //the Rects for the symbols and add the shapes
+        let rects = rectForSymbol(numberOfSymbols)
+        for rect in rects {
+            var path = UIBezierPath()
+            switch symbol {
+            case 0: path = polygon(rect)
+            case 1: path = oval(rect)
+            case 2: path = circle(rect)
+            default: break
+            }
+            path.lineWidth = 2.0
+            symbolColor().setStroke()
+            
+            //Adding the Shading
+            UIGraphicsGetCurrentContext()?.saveGState()
+            path.addClip()
+            shading(path, rect)
+            path.stroke()
+            UIGraphicsGetCurrentContext()?.restoreGState()
+            
+        }
         
-        let shapeLayer2 = CAShapeLayer()
-        shapeLayer2.path = rect2.cgPath
-        shapeLayer2.fillColor = UIColor.red.cgColor
+    }
+    
+    private func rectForSymbol(_ rectLoc: Int) -> [CGRect] {
+        let symbolRectHeight = cardRectWithinRoundedRect.height / 3
+        var rects = [CGRect]()
+        switch rectLoc {
+        case 0:
+            rects.append(CGRect(x: cardRectWithinRoundedRect.minX, y: cardRectWithinRoundedRect.minY + symbolRectHeight, width: cardRectWithinRoundedRect.width, height: symbolRectHeight).zoom(by: SizeRatio.symbolRectOffset))
+        case 1:
+            rects.append(CGRect(x: cardRectWithinRoundedRect.minX, y: cardRectWithinRoundedRect.minY + (symbolRectHeight / 2), width: cardRectWithinRoundedRect.width, height: symbolRectHeight).zoom(by: SizeRatio.symbolRectOffset))
+            rects.append(CGRect(x: cardRectWithinRoundedRect.minX, y: cardRectWithinRoundedRect.minY + (symbolRectHeight / 2) + symbolRectHeight, width: cardRectWithinRoundedRect.width, height: symbolRectHeight).zoom(by: SizeRatio.symbolRectOffset))
+
+        case 2:
+            rects.append(CGRect(x: cardRectWithinRoundedRect.minX, y: cardRectWithinRoundedRect.minY, width: cardRectWithinRoundedRect.width, height: symbolRectHeight).zoom(by: SizeRatio.symbolRectOffset))
+            rects.append(CGRect(x: cardRectWithinRoundedRect.minX, y: cardRectWithinRoundedRect.minY + symbolRectHeight, width: cardRectWithinRoundedRect.width, height: symbolRectHeight).zoom(by: SizeRatio.symbolRectOffset))
+            rects.append(CGRect(x: cardRectWithinRoundedRect.minX, y: symbolRectHeight * 2 + cardRectWithinRoundedRect.minY, width: cardRectWithinRoundedRect.width, height: symbolRectHeight).zoom(by: SizeRatio.symbolRectOffset))
+        default:
+            break
+        }
+        return rects
+    }
+    
+    private func polygon(_ rect: CGRect) -> UIBezierPath {
+        let path = UIBezierPath()
+
+        path.move(to: CGPoint(x: rect.minX, y: rect.height / 2 + rect.minY))
+        path.addLine(to: CGPoint(x: rect.width / 2 + rect.minX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.height / 2 + rect.minY))
+        path.addLine(to: CGPoint(x: rect.width / 2 + rect.minX, y: rect.maxY))
+        path.close()
+
+        return path
+    }
+    
+    private func oval(_ rect: CGRect) -> UIBezierPath {
+        let path = UIBezierPath(ovalIn: rect)
+        return path
+    }
+    
+    private func circle(_ rect: CGRect) -> UIBezierPath{
+        let path = UIBezierPath()
+        path.addArc(withCenter: CGPoint(x: rect.midX, y: rect.midY), radius: rect.height / 2, startAngle: 0, endAngle: 2*CGFloat.pi, clockwise: true)
+        return path
+    }
+    
+    
+    private func shading(_ path: UIBezierPath,_ rect: CGRect){
+        switch shading {
+        // Just outline
+        case 0:
+            cardBackgroundColor.setFill()
+        // Filled In
+        case 1:
+            symbolColor().setFill()
+            path.fill()
+        // Filled with Lines
+        case 2:
+            fillWithLines(path, rect)
+        default:
+            cardBackgroundColor.setFill()
+        }
+    }
+    
+    private func fillWithLines(_ path: UIBezierPath,_ rect: CGRect){
+        var topX = rect.minX
         
-        let shapeLayer3 = CAShapeLayer()
-        shapeLayer3.path = rect3.cgPath
-        shapeLayer3.fillColor = UIColor.green.cgColor
+        for _ in 1...Int((rect.width / ViewRatios.fillWithLinesSpacing) + 10) {
+            topX += ViewRatios.fillWithLinesSpacing
+            path.move(to: CGPoint(x: topX, y: rect.minY))
+            path.addLine(to: CGPoint(x: topX - ViewRatios.fillWithLinesSpacing - 25, y: rect.maxY))
+        }
         
-        self.layer.addSublayer(shapeLayer1)
-        self.layer.addSublayer(shapeLayer2)
-        self.layer.addSublayer(shapeLayer3)
-        
+    }
+
+    
+    private func test (_ rect: CGRect,_ aColor: UIColor) {
+        let path = UIBezierPath(rect: rect)
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = path.cgPath
+        shapeLayer.lineWidth = 1.0
+        shapeLayer.strokeColor = aColor.cgColor
+        shapeLayer.fillColor = cardBackgroundColor.cgColor
+        self.layer.addSublayer(shapeLayer)
     }
     
     private func symbolColor() -> UIColor {
@@ -77,13 +161,6 @@ class CardView: UIView {
             return UIColor.black
         }
     }
-    
-    private func symbolRect()  {
-        let symbolRectHeight = roundedRectBounds.height / 3
-
-    }
-    
- 
 
     //Change the display if someting chagned like the Accessibility slider in General settings
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -100,6 +177,7 @@ extension CardView {
         static let cornerOffSetToCornerRadius: CGFloat = 0.33
         static let faceCardImageSizeToBoundsSize: CGFloat = 0.63
         static let roundRectOffsetRatio: CGFloat = 0.97
+        static let cardRectWithinRoundedRectOffset: CGFloat = 0.95
         static let symbolRectOffset: CGFloat = 0.90
     }
     private var cornerRadius: CGFloat {
@@ -113,6 +191,14 @@ extension CardView {
     }
     private var roundedRectBounds: CGRect {
         return bounds.zoom(by: SizeRatio.roundRectOffsetRatio)
+    }
+    private var cardRectWithinRoundedRect: CGRect {
+        return roundedRectBounds.zoom(by: SizeRatio.cardRectWithinRoundedRectOffset)
+    }
+    
+    struct ViewRatios {
+        static let cardAspectRatio: CGFloat = 0.71
+        static let fillWithLinesSpacing: CGFloat = 10
     }
 
 }

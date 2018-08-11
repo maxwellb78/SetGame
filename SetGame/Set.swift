@@ -9,6 +9,7 @@
 import Foundation
 
 struct Set {
+    static let numberOfCardsInGame = 81
     private(set) var cards = [Card]()
     private(set) var cardsDealtDict: [Int : Card] = [:]
     private(set) var cardsSelected = [Card]()
