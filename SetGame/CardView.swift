@@ -16,6 +16,7 @@ class CardView: UIView {
     var numberOfSymbols: Int = 2 {didSet {setNeedsDisplay(); setNeedsLayout() } }
     var superViewBackgroundColor: UIColor = UIColor.clear {didSet {setNeedsDisplay(); setNeedsLayout() } }
     var isSelected: Bool = false {didSet {setNeedsDisplay(); setNeedsLayout() } }
+    var cardNumber: Int = 0
     private var cardBackgroundColor: UIColor = UIColor.white
     private var selectedColor: UIColor = UIColor.red
     
@@ -35,7 +36,7 @@ class CardView: UIView {
         let roundedRect = UIBezierPath(roundedRect: roundedRectBounds, cornerRadius: cornerRadius)
         if isSelected {
             selectedColor.setStroke()
-            roundedRect.lineWidth = 4.0
+            roundedRect.lineWidth = 8.0
             roundedRect.stroke()
         }
         cardBackgroundColor.setFill()

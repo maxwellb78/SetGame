@@ -12,6 +12,7 @@ struct Set {
     static let numberOfCardsInGame = 81
     private(set) var cards = [Card]()
     private(set) var cardsDealtDict: [Int : Card] = [:]
+    private(set) var cardsDealt = [Card]()
     private(set) var cardsSelected = [Card]()
     private(set) var maxCardsDisplayed = 0
     private(set) var numberOfMatches = 0
@@ -19,7 +20,7 @@ struct Set {
     mutating func dealCards(numberOfCards number: Int){
         for index in 0..<number {
             if cards.count > 0 {
-               // cardsDealt.append(cards[0])
+                //cardsDealt.append(cards[0])
                 cardsDealtDict.updateValue(cards[0], forKey: index)
                 cards.remove(at: 0)
             } else {
@@ -69,8 +70,8 @@ struct Set {
             //If 3 cards selected chcek for match
             if cardsSelected.count == 3 {
                 // USE THIS FOR TESTING
-                // if areThreeCardsAMatch(cardOne: cardsSelected[0], cardTwo: cardsSelected[0], cardThree: cardsSelected[0]) {
-                if areThreeCardsAMatch(cardOne: cardsSelected[0], cardTwo: cardsSelected[1], cardThree: cardsSelected[2]) {
+                 if areThreeCardsAMatch(cardOne: cardsSelected[0], cardTwo: cardsSelected[0], cardThree: cardsSelected[0]) {
+//                if areThreeCardsAMatch(cardOne: cardsSelected[0], cardTwo: cardsSelected[1], cardThree: cardsSelected[2]) {
                     removeCardsFromDealt(cardsSelected)
                     cardsSelected.removeAll()
                     dealThreeCards()
@@ -138,6 +139,19 @@ struct Set {
         cards = shuffledCards
     }
     
+    mutating func shuffleCards(){
+        var tempCards = Array(cardsDealtDict.values)
+        var shuffledCards = [Card]()
+        
+        for _ in tempCards.indices {
+            let randomIndex = tempCards.count.arc4random
+            shuffledCards.append(tempCards.remove(at: randomIndex))
+        }
+
+        for index in 0..<shuffledCards.count {
+                cardsDealtDict.updateValue(shuffledCards[index], forKey: index)
+        }
+    }
 }
 
 extension Int {
