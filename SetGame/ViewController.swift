@@ -34,59 +34,43 @@ class ViewController: UIViewController {
 
     private func startNewGame() {
         game = Set(maxCardsDisplayed: Set.numberOfCardsInGame)
-        game.dealCards(numberOfCards: 81)
+        game.dealCards(numberOfCards: 12)
         updateViewFromModel()
     }
 
     private func updateViewFromModel(){
-        grid.cellCount = game.cardsDealtDict.count
+        grid.cellCount = game.cardsDealt.count
         
         //remove any cards alreaey in the view
         for view in cardAreaView.subviews {
             view.removeFromSuperview()
         }
         
-        
-        print("-------------")
-        for index in 0...100 {
-             if let card = game.cardsDealtDict[index]{
-                print("index: \(index) card: \(card)")
-            }
-        }
-        print("**************")
-        
-        var cardDealtIndex = 0
         for index in 0..<grid.cellCount {
             if let cardRect = grid[index] {
-                cardDealtIndex = nextDealtCard(cardDealtIndex)
-                print("index: \(index)  cardDealtIndex: \(cardDealtIndex)")
-                if let card = game.cardsDealtDict[cardDealtIndex]{
-                    print("card: \(card)")
-                    
-                    
-                    let cardView = CardView(frame: cardRect)
-                    cardView.symbol = card.symbol
-                    cardView.color = card.color
-                    cardView.numberOfSymbols = card.numberOfSymbols
-                    cardView.shading = card.shading
-                    cardView.cardNumber = index
-                    if game.cardsSelected.contains(card) {
-                        cardView.isSelected = true
-                    }
-                    if let bgColor = cardAreaView.backgroundColor {
-                        cardView.superViewBackgroundColor = bgColor
-                    }
-                    cardView.sizeToFit()
-                    
-                    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(_:)))
-                    tapGesture.numberOfTapsRequired = 1
-                    tapGesture.numberOfTouchesRequired = 1
-                    cardView.addGestureRecognizer(tapGesture)
-                    
-                    cardAreaView.addSubview(cardView)
+                let card = game.cardsDealt[index]
+                let cardView = CardView(frame: cardRect)
+                cardView.symbol = card.symbol
+                cardView.color = card.color
+                cardView.numberOfSymbols = card.numberOfSymbols
+                cardView.shading = card.shading
+                cardView.cardNumber = index
+                if game.cardsSelected.contains(card) {
+                    cardView.isSelected = true
                 }
+                if let bgColor = cardAreaView.backgroundColor {
+                    cardView.superViewBackgroundColor = bgColor
+                }
+                cardView.sizeToFit()
+                
+                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(_:)))
+                tapGesture.numberOfTapsRequired = 1
+                tapGesture.numberOfTouchesRequired = 1
+                cardView.addGestureRecognizer(tapGesture)
+                
+                cardAreaView.addSubview(cardView)
+                
             }
-            cardDealtIndex += 1
         }
         
         //Set Matches Text
@@ -100,27 +84,6 @@ class ViewController: UIViewController {
         }
     }
     
-    private func nextDealtCard(_ cardDealtIndex: Int) -> Int {
-        let maxIndex = cardDealtDictMaxIndex()
-        for index in cardDealtIndex...maxIndex {
-            if game.cardsDealtDict[index] != nil{
-                return index
-            }
-        }
-        return maxIndex + 10
-    }
-    
-    private func cardDealtDictMaxIndex() -> Int{
-        var returnIndex = 0
-        
-        for (index, card) in game.cardsDealtDict {
-            if index > returnIndex {
-                returnIndex = index
-            }
-        }
-        return returnIndex
-    }
-    
     @objc func touchCard(_ sender: UITapGestureRecognizer){
         if let cardView = sender.view as? CardView {
             game.chooseCard(at: cardView.cardNumber)
@@ -129,7 +92,7 @@ class ViewController: UIViewController {
     }
     
     @objc func shuffleCards(_ sender: UISwipeGestureRecognizer){
-        game.shuffleCards()
+        game.shuffleDealtCards()
         updateViewFromModel()
     }
     

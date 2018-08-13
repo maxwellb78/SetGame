@@ -11,17 +11,16 @@ import Foundation
 struct Set {
     static let numberOfCardsInGame = 81
     private(set) var cards = [Card]()
-    private(set) var cardsDealtDict: [Int : Card] = [:]
+//    private(set) var cardsDealtDict: [Int : Card] = [:]
     private(set) var cardsDealt = [Card]()
     private(set) var cardsSelected = [Card]()
     private(set) var maxCardsDisplayed = 0
     private(set) var numberOfMatches = 0
     
     mutating func dealCards(numberOfCards number: Int){
-        for index in 0..<number {
+        for _ in 0..<number {
             if cards.count > 0 {
-                //cardsDealt.append(cards[0])
-                cardsDealtDict.updateValue(cards[0], forKey: index)
+                cardsDealt.append(cards[0])
                 cards.remove(at: 0)
             } else {
                 return
@@ -30,18 +29,27 @@ struct Set {
     }
     
     mutating func dealThreeCards(){
-        dealCard()
-        dealCard()
-        dealCard()
+        for _ in 1...3 {
+            dealCard()
+        }
     }
     
     mutating func dealCard(){
         if cards.count > 0 {
-            for index in 0...maxCardsDisplayed - 1 {
-                if cardsDealtDict[index] == nil {
-                    cardsDealtDict.updateValue(cards[0], forKey: index)
-                    cards.remove(at: 0)
-                    return
+            cardsDealt.append(cards[0])
+            cards.remove(at: 0)
+        }
+    }
+    
+    mutating func replaceCards(forCards cards: [Card]){
+        for card in cards {
+            if let cardIndex = cardsDealt.index(of: card) {
+                if self.cards.count > 0{
+                    cardsDealt.insert(self.cards[0], at: cardIndex)
+                    cardsDealt.remove(at: cardIndex + 1)
+                    self.cards.remove(at: 0)
+                } else {
+                    cardsDealt.remove(at: cardIndex)
                 }
             }
         }
@@ -53,8 +61,11 @@ struct Set {
     
     mutating func chooseCard(at index: Int){
         //If card is not dealt ignore
-        if let card = cardsDealtDict[index] {
-            
+        //if let card = cardsDealtDict[index] {
+    
+        if index < cardsDealt.count {
+            let card = cardsDealt[index]
+
             //Lets just select and deselect cards to start
             if !cardsSelected.contains(card){
                 //Only select a card if less than 3 are selected already
@@ -70,11 +81,10 @@ struct Set {
             //If 3 cards selected chcek for match
             if cardsSelected.count == 3 {
                 // USE THIS FOR TESTING
-                 if areThreeCardsAMatch(cardOne: cardsSelected[0], cardTwo: cardsSelected[0], cardThree: cardsSelected[0]) {
-//                if areThreeCardsAMatch(cardOne: cardsSelected[0], cardTwo: cardsSelected[1], cardThree: cardsSelected[2]) {
-                    removeCardsFromDealt(cardsSelected)
+                //                if areThreeCardsAMatch(cardOne: cardsSelected[0], cardTwo: cardsSelected[0], cardThree: cardsSelected[0]) {
+                if areThreeCardsAMatch(cardOne: cardsSelected[0], cardTwo: cardsSelected[1], cardThree: cardsSelected[2]) {
+                    replaceCards(forCards: cardsSelected)
                     cardsSelected.removeAll()
-                    dealThreeCards()
                     numberOfMatches += 1
                 } else {
                     //No Match deselect all cards and only select the card just touched
@@ -86,11 +96,12 @@ struct Set {
     }
     
     private mutating func removeCardsFromDealt(_ cards: [Card]){
-        for (cardNumber, card) in cardsDealtDict {
-            if cards.contains(card){
-                cardsDealtDict.removeValue(forKey: cardNumber)
+        for card in cards {
+            if let cardIndex = cardsDealt.index(of: card) {
+                cardsDealt.remove(at: cardIndex)
             }
         }
+        
     }
     
     private func areThreeCardsAMatch(cardOne one: Card, cardTwo two: Card, cardThree three: Card) -> Bool {
@@ -131,26 +142,21 @@ struct Set {
         }
         
         //Shuffle the cards
-        var shuffledCards = [Card]()
-        for _ in cards.indices {
-            let randomIndex = cards.count.arc4random
-            shuffledCards.append(cards.remove(at: randomIndex))
-        }
-        cards = shuffledCards
+        cards = shuffleCards(cards)
     }
     
-    mutating func shuffleCards(){
-        var tempCards = Array(cardsDealtDict.values)
+    mutating func shuffleDealtCards(){
+        cardsDealt = shuffleCards(cardsDealt)
+    }
+    
+    private mutating func shuffleCards(_ cardsToBeShuffled: [Card]) -> [Card]{
+        var toBeShuffled = cardsToBeShuffled
         var shuffledCards = [Card]()
-        
-        for _ in tempCards.indices {
-            let randomIndex = tempCards.count.arc4random
-            shuffledCards.append(tempCards.remove(at: randomIndex))
+        for _ in toBeShuffled.indices {
+            let randomIndex = toBeShuffled.count.arc4random
+            shuffledCards.append(toBeShuffled.remove(at: randomIndex))
         }
-
-        for index in 0..<shuffledCards.count {
-                cardsDealtDict.updateValue(shuffledCards[index], forKey: index)
-        }
+        return shuffledCards
     }
 }
 
